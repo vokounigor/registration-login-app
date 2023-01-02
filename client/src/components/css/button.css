@@ -1,0 +1,12 @@
+.button-styled {
+	cursor: pointer;
+	background-color: #5f5fff;
+	color: white;
+	border: none;
+	padding: 0.9em 2.8em;
+	border-radius: 5px;
+}
+
+.button-styled:hover {
+	background-color: #4848bf;
+}

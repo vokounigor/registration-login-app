@@ -1,0 +1,44 @@
+version: '3'
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - '80:80'
+    depends_on:
+      - client
+      - api
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+  api:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    volumes: 
+      - /api/node_modules
+      - ./server:/api
+    links:
+      - mongo
+    ports:
+      - '5000:5000'
+    depends_on:
+      - mongo
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    links:
+      - api
+    ports:
+      - '3000:3000'
+    environment:
+      - WATCHPACK_POLLING=true

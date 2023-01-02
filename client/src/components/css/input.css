@@ -1,0 +1,30 @@
+.icon-input-spacer {
+  position: relative;
+  display: flex;
+  justify-content: start;
+  align-content: flex-end;
+}
+
+.icon-input-spacer img {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 6px;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-input-spacer > .input-styled {
+  outline: none;
+  border: none;
+  color: #000;
+  border-bottom: 1px solid #999;
+  padding: 6px 30px;
+  width: 100%;
+  font-size: 18px;
+}
+
+.icon-input-spacer > .input-styled:focus {
+  color: #15141a;
+  border-color: #15141a;
+}
