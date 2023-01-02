@@ -10,15 +10,11 @@ import { AxiosError } from "axios";
 
 // Css and images
 import "./css/registration.css";
-import FirstNameIcon from "../assets/icons/first-name.png";
-import LastNameIcon from "../assets/icons/last-name.png";
 import EmailIcon from "../assets/icons/email.png";
 import PasswordIcon from "../assets/icons/password.png";
-import RegistrationImage from "../assets/images/register.png";
+import LoginImage from "../assets/images/login.png";
 
-const Registration: FC = () => {
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
+const Login: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [validationErrors, setValidationErrors] = useState({
@@ -30,9 +26,9 @@ const Registration: FC = () => {
 
   // Check if a user is already logged in
   useEffect(() => {
-    const checkRegister = async () => {
+    const checkLogin = async () => {
       try {
-        await axios.post(apiRoutes.register, {});
+        await axios.post(apiRoutes.login, {});
       } catch (err) {
         const error = err as AxiosError;
         const errorData = error.response?.data as {
@@ -50,7 +46,7 @@ const Registration: FC = () => {
         }
       }
     };
-    checkRegister();
+    checkLogin();
     // eslint-disable-next-line
   }, []);
 
@@ -89,20 +85,18 @@ const Registration: FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     // Prevent submit when something is empty
-    if (!firstName || !lastName || !email || !password) return;
+    if (!email || !password) return;
     // Prevent submitting faulty values
     if (validationErrors.email || validationErrors.password) return;
 
     clearValidationErrors();
     try {
-      const res = await axios.post(apiRoutes.register, {
-        firstName,
-        lastName,
+      const res = await axios.post(apiRoutes.login, {
         email,
         password,
       });
-      // User was created successfully
-      if (res.status === 201) {
+      // User logged in successfully
+      if (res.status === 200) {
         navigate("/");
       }
     } catch (err) {
@@ -115,8 +109,13 @@ const Registration: FC = () => {
       const hasErrorCode =
         errorData && Object.prototype.hasOwnProperty.call(errorData, "code");
 
-      if (hasErrorCode && errorData.code === "400.0.4") {
-        setSubmitError("A user with that email address already exists.");
+      if (hasErrorCode && errorData.code === "404.0.1") {
+        setSubmitError("No user with that email exists.");
+        return;
+      }
+
+      if (hasErrorCode && errorData.code === "401.0.1") {
+        setSubmitError("Incorrect password provided.");
         return;
       }
 
@@ -135,27 +134,9 @@ const Registration: FC = () => {
   return (
     <FormWrapper>
       <div className="registration-form__wrapper">
-        <h1 className="registration-form__title">Sign up</h1>
+        <h1 className="registration-form__title">Sign in</h1>
         {submitError && <h3 className="submit-error">{submitError}</h3>}
         <form method="POST">
-          <Input
-            type="text"
-            name="firstName"
-            icon={FirstNameIcon}
-            iconAlt="first name"
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="First Name*"
-            spacer="25px"
-          />
-          <Input
-            type="text"
-            name="lastName"
-            icon={LastNameIcon}
-            iconAlt="last name"
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Last Name*"
-            spacer="25px"
-          />
           <Input
             type="email"
             name="email"
@@ -183,24 +164,20 @@ const Registration: FC = () => {
           </p>
           <Button
             type="submit"
-            text="Register"
+            text="Sign in"
             style={{ width: "100%", fontSize: "18px" }}
             onClick={handleSubmit}
           />
         </form>
         <p className="registration-form__bottom-text">
-          Already have an account? <a href="/login">Sign in</a>
+          Don't have an account? <a href="/register">Sign up</a>
         </p>
       </div>
       <div className="image-container">
-        <img
-          src={RegistrationImage}
-          alt="register"
-          className="image-container__image"
-        />
+        <img src={LoginImage} alt="login" className="image-container__image" />
       </div>
     </FormWrapper>
   );
 };
 
-export default Registration;
+export default Login;

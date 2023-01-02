@@ -14,7 +14,15 @@
   height: 24px;
 }
 
-.icon-input-spacer > .input-styled {
+.input-error-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.input-error-wrapper > .input-styled {
   outline: none;
   border: none;
   color: #000;
@@ -24,7 +32,16 @@
   font-size: 18px;
 }
 
-.icon-input-spacer > .input-styled:focus {
+.input-error-wrapper > .input-styled:focus {
   color: #15141a;
   border-color: #15141a;
+}
+
+.input-error-wrapper > p {
+  font-size: 12px;
+  color: red;
+}
+
+.input-error-wrapper.form-error > .input-styled {
+  border-color: red;
 }
