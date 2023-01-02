@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, FormEvent, useState, useEffect } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import FormWrapper from "../components/FormWrapper";
+import ContainerWrapper from "../components/ContainerWrapper";
 import { validateEmail, validatePassword } from "../utils/validators";
 import axios from "../config/axios";
 import { useNavigate } from "react-router-dom";
@@ -132,7 +132,7 @@ const Login: FC = () => {
   };
 
   return (
-    <FormWrapper>
+    <ContainerWrapper>
       <div className="registration-form__wrapper">
         <h1 className="registration-form__title">Sign in</h1>
         {submitError && <h3 className="submit-error">{submitError}</h3>}
@@ -176,7 +176,7 @@ const Login: FC = () => {
       <div className="image-container">
         <img src={LoginImage} alt="login" className="image-container__image" />
       </div>
-    </FormWrapper>
+    </ContainerWrapper>
   );
 };
 

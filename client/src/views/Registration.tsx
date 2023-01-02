@@ -1,8 +1,12 @@
 import { ChangeEvent, FC, FormEvent, useState, useEffect } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import FormWrapper from "../components/FormWrapper";
-import { validateEmail, validatePassword } from "../utils/validators";
+import ContainerWrapper from "../components/ContainerWrapper";
+import {
+  validateEmail,
+  validatePassword,
+  validateName,
+} from "../utils/validators";
 import axios from "../config/axios";
 import { useNavigate } from "react-router-dom";
 import { apiRoutes } from "../config/apiRoutes";
@@ -22,6 +26,8 @@ const Registration: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [validationErrors, setValidationErrors] = useState({
+    firstName: false,
+    lastName: false,
     email: false,
     password: false,
   });
@@ -55,7 +61,12 @@ const Registration: FC = () => {
   }, []);
 
   const clearValidationErrors = () => {
-    setValidationErrors({ password: false, email: false });
+    setValidationErrors({
+      password: false,
+      email: false,
+      firstName: false,
+      lastName: false,
+    });
   };
 
   const emailValidation = (email: string) => {
@@ -84,6 +95,26 @@ const Registration: FC = () => {
     const value = e.target.value;
     setPassword(value);
     passwordValidation(value);
+  };
+
+  const handleFirstNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFirstName(value);
+    if (!validateName(value)) {
+      setValidationErrors({ ...validationErrors, firstName: true });
+      return;
+    }
+    clearValidationErrors();
+  };
+
+  const handleLastNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLastName(value);
+    if (!validateName(value)) {
+      setValidationErrors({ ...validationErrors, lastName: true });
+      return;
+    }
+    clearValidationErrors();
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -133,7 +164,7 @@ const Registration: FC = () => {
   };
 
   return (
-    <FormWrapper>
+    <ContainerWrapper>
       <div className="registration-form__wrapper">
         <h1 className="registration-form__title">Sign up</h1>
         {submitError && <h3 className="submit-error">{submitError}</h3>}
@@ -143,8 +174,10 @@ const Registration: FC = () => {
             name="firstName"
             icon={FirstNameIcon}
             iconAlt="first name"
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={handleFirstNameChange}
             placeholder="First Name*"
+            error={validationErrors.firstName}
+            errorText="First name is required"
             spacer="25px"
           />
           <Input
@@ -152,8 +185,10 @@ const Registration: FC = () => {
             name="lastName"
             icon={LastNameIcon}
             iconAlt="last name"
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={handleLastNameChange}
             placeholder="Last Name*"
+            error={validationErrors.lastName}
+            errorText="Last name is required"
             spacer="25px"
           />
           <Input
@@ -183,7 +218,7 @@ const Registration: FC = () => {
           </p>
           <Button
             type="submit"
-            text="Register"
+            text="Sign up"
             style={{ width: "100%", fontSize: "18px" }}
             onClick={handleSubmit}
           />
@@ -199,7 +234,7 @@ const Registration: FC = () => {
           className="image-container__image"
         />
       </div>
-    </FormWrapper>
+    </ContainerWrapper>
   );
 };
 

@@ -36,6 +36,7 @@
 
 .registration-form__bottom-text > a {
   color: black;
+  font-weight: bold;
 }
 
 .submit-error {

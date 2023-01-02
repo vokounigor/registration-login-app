@@ -15,11 +15,26 @@ body {
   height: 100vh;
 }
 
+@keyframes animate-container {
+  0% {
+    transform: translateY(300px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .container {
   margin: 0 auto;
   max-width: 900px;
   padding: 75px 0;
   border-radius: 20px;
   background-color: #fff;
-  box-shadow: 0 15px 17px .17px rgba(0,0,0,.05);
+  box-shadow: 0 15px 17px 0.17px rgba(0, 0, 0, 0.05);
+  animation: 500ms ease-out forwards animate-container;
 }

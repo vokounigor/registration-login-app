@@ -2,7 +2,11 @@ import { FC, useEffect, useState } from "react";
 import { apiRoutes } from "../config/apiRoutes";
 import axios from "../config/axios";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
+import ContainerWrapper from "../components/ContainerWrapper";
+
+// CSS and images
+import "./css/dashboard.css";
+import DashboardImage from "../assets/images/dashboard.png";
 
 const Dashboard: FC = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -19,7 +23,7 @@ const Dashboard: FC = () => {
         setFirstName(firstName);
         setLastName(lastName);
       } catch (err) {
-        navigate("/login");
+        navigate("/register");
       }
     };
     getData();
@@ -30,7 +34,7 @@ const Dashboard: FC = () => {
     try {
       const res = await axios.get(apiRoutes.logout);
       if (res.status === 200) {
-        navigate("/login");
+        navigate("/register");
       }
     } catch (err) {
       setError("Error logging out. Please try again.");
@@ -38,13 +42,18 @@ const Dashboard: FC = () => {
   };
 
   return (
-    <div>
-      {error && <p>{error}</p>}
-      <p>
-        Hello {firstName} {lastName}!
-      </p>
-      <Button text="Logout" onClick={handleClick} />
-    </div>
+    <ContainerWrapper>
+      <div className="dashboard-container">
+        <h1>
+          Welcome {firstName} {lastName}!
+        </h1>
+        <img src={DashboardImage} alt="dashboard" />
+        <button onClick={handleClick} className="logout-button">
+          Log Out
+        </button>
+        {error && <p className="logout-error">{error}</p>}
+      </div>
+    </ContainerWrapper>
   );
 };
 
